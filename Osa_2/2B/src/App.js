@@ -6,43 +6,55 @@ const App = () => {
     { name: 'Arto Hellas' }
   ]) 
   const [ newName, setNewName ] = useState('')
-
-  console.log("LISTAN IHMISET OVAT: " , persons)
+  const [ newNumber, setNewNumber ] = useState('')
 
   const rows = () => persons.map(note =>
     <Card
-      key={note.id}
+      key={note.name}
       card={note}
     />
   )
 
   const handleNoteChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
-  const addNote = (event) => {
-    event.preventDefault()
-    const noteObject = {
-      name: newName,
-      id: persons.length + 1,
-    }
-    setPersons(persons.concat(noteObject))
-    setNewName('')
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
   }
+
+  const addNote = (event) => {
+  let doAdd = 0
+    persons.forEach(function(name,id){
+      if(name.name === newName){
+        doAdd = 1
+      }
+    })
+
+    event.preventDefault()
+    setNewName('')
+    setNewNumber('')
+    if(doAdd === 0){ 
+      const noteObject = {
+        name: newName,
+        number: newNumber,
+        id: persons.length + 1,
+      }
+    setPersons(persons.concat(noteObject))
+  }else{
+    alert(`${newName} is already in phone book`)
+  }
+  doAdd = 0
+}
+
 
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addNote}>
-        
-        name:
-        <input
-          value={newName}
-          onChange={handleNoteChange}
-        />
-        <button type="submit">save</button> 
-        
+        <div>name: <input value={newName} onChange={handleNoteChange}/></div>
+        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
+        <div><button type="submit">add</button></div>        
       </form>
       <h2>Numbers</h2>
       {rows()}
