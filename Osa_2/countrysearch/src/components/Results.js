@@ -3,12 +3,9 @@ import Country from './Country'
 import SpecificCountry from './SpecificCountry'
 
 const Results = ({ list }) => {
-
-    console.log("filtered countries: " ,list)
-
     const showResult = () => list.map(country => 
         <Country
-        key={country.numericCode}
+        id={country.area + country.population}
         name={country.name}
         capital={country.capital}
         />
@@ -20,13 +17,21 @@ const Results = ({ list }) => {
     )
 
     const secondDecision = () => (
-        list.length > 1 && list.length
+        list.length > 1
                     ? showResult()
                     : thirdDecision()
     )
-
-    const thirdDecision = () => list.length !== 0 ? <SpecificCountry country={list}/> : <p>No countries found :(</p>
-    
+    console.log(list)
+    const thirdDecision = () => list.length !== 0 
+                    ? <SpecificCountry
+                     name={list[0].name}
+                     capital={list[0].capital}
+                     population={list[0].population}
+                     languages={list[0].languages}
+                     flag={list[0].flag}
+                     /> 
+                    : <p>No countries found :(</p>
+ 
     return (
         <div>{firstDecision()}</div>
     )

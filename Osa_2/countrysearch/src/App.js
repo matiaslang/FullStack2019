@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import Country from './components/Country'
 import Results from './components/Results'
 
 const App = () => {
