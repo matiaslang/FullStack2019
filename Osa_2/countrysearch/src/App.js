@@ -7,6 +7,9 @@ const App = () => {
   const [countries, setCountries] = useState([''])
   //const [filteredCountries, setFilteredCountries] = useState([''])
 
+  const manualChange = (props) => {
+    setSearch(props)
+  }
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
@@ -33,7 +36,7 @@ const App = () => {
   return (
       <div>
         find countries: <input value={search} onChange={handleSearchChange}/>
-        <Results list = {filteredCountries}/>
+        <Results list = {filteredCountries} searchMethod={manualChange}/>
       </div>
   )
 }

@@ -2,13 +2,23 @@ import React from 'react'
 import Country from './Country'
 import SpecificCountry from './SpecificCountry'
 
-const Results = ({ list }) => {
-    const showResult = () => list.map(country => 
+const Results = ({ list , searchMethod }) => {
+
+    const handleClick = (props) => { 
+        searchMethod(props)
+    }
+
+    const showResult = () => list.map(country =>
         <Country
-        id={country.area + country.population}
+        key={country.area + country.population}
         name={country.name}
         capital={country.capital}
+        population={country.population}
+        languages={country.languages}
+        flag={country.flag}
+        mtod={handleClick}
         />
+     
     )
     const firstDecision = () => (
         list.length >= 10
@@ -21,7 +31,6 @@ const Results = ({ list }) => {
                     ? showResult()
                     : thirdDecision()
     )
-    console.log(list)
     const thirdDecision = () => list.length !== 0 
                     ? <SpecificCountry
                      name={list[0].name}
