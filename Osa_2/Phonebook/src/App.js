@@ -3,12 +3,15 @@ import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import personService from './services/personlist'
+import Notification from './services/Notification'
 
 const App = () => {
   const [ persons, setPersons] = useState([''])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchParam, setSearchParam ] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorNum, setErrorNum] = useState(0)
 
   useEffect(() => {
     personService
@@ -52,11 +55,27 @@ const App = () => {
           personService
           .update(name.id, noteObject)
           .then(returnedPerson => {
+            setErrorNum(0)
+            setErrorMessage(
+              `User ${newName} has now been updated`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 3000)
             personService
             .getAll()
             .then(initialPersons => {
             setPersons(initialPersons)
             })
+          })
+          .catch(error => {
+            setErrorNum(1)
+            setErrorMessage(
+              `Information of ${newName} has been already deleted from server`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
           })
       }
     }
@@ -74,6 +93,13 @@ const App = () => {
       personService
       .create(noteObject)
       .then(returnedPerson => {
+        setErrorNum(0)
+        setErrorMessage(
+          `User ${newName} has now been added`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
@@ -87,8 +113,13 @@ const App = () => {
       personService
       .deleteUser(id)
       .then(returnedPerson=> {
-          alert(`User ${returnedPerson} has now been deleted`)
-          console.log(returnedPerson.content)
+          setErrorNum(0)
+          setErrorMessage(
+            `User ${name} has now been deleted`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
           personService
           .getAll()
           .then(initialPersons => {
@@ -96,14 +127,23 @@ const App = () => {
           })
         })
       .catch(error => {
-          console.log('fail', error)
+        setErrorNum(1)
+        setErrorMessage(
+          `There has been an error ${error}`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
     } 
   }
 
 return (
   <div>
+
     <h2>Phonebook</h2>
+
+    <Notification message={errorMessage} errorNum={errorNum} />
 
     <Filter value={searchParam} onChange={handleSearchChange} />
 
