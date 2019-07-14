@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
-import axios from 'axios'
+import personService from './services/personlist'
 
 const App = () => {
   const [ persons, setPersons] = useState([''])
@@ -10,15 +10,14 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchParam, setSearchParam ] = useState('')
 
-  const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-        console.log("DATA ON: " , response.data)
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
-  }
-  useEffect(hook, [])
+  }, [])
+  console.log('render', persons.length, 'persons')
   
 
   const personsToShow = searchParam === ""
@@ -44,8 +43,24 @@ const App = () => {
     persons.forEach(function(name,id){
       if(name.name === newName){
         doAdd = 1
+        if(window.confirm(`${newName} is already added to phonebook, would you like to replace the old number with a new one?`)){
+          const noteObject = {
+            name: newName,
+            number: newNumber,
+            id: persons.length + 1,
+          }
+          personService
+          .update(name.id, noteObject)
+          .then(returnedPerson => {
+            personService
+            .getAll()
+            .then(initialPersons => {
+            setPersons(initialPersons)
+            })
+          })
       }
-    })
+    }
+  })
 
     event.preventDefault()
     setNewName('')
@@ -56,12 +71,35 @@ const App = () => {
         number: newNumber,
         id: persons.length + 1,
       }
-    setPersons(persons.concat(noteObject))
-  }else{
-    alert(`${newName} is already in phone book`)
+      personService
+      .create(noteObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
   }
   doAdd = 0
 }
+
+  const deletePerson = (name, id) => {
+    if (window.confirm(`Are you sure you wish to delete user ${name}?`)){
+      personService
+      .deleteUser(id)
+      .then(returnedPerson=> {
+          alert(`User ${returnedPerson} has now been deleted`)
+          console.log(returnedPerson.content)
+          personService
+          .getAll()
+          .then(initialPersons => {
+            setPersons(initialPersons)
+          })
+        })
+      .catch(error => {
+          console.log('fail', error)
+      })
+    } 
+  }
 
 return (
   <div>
@@ -81,7 +119,7 @@ return (
 
     <h3>Numbers</h3>
 
-    <Persons persons={personsToShow}/>
+    <Persons persons={personsToShow} remove={deletePerson}/>
   </div>
 )
 }

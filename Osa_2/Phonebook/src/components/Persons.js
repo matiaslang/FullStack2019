@@ -1,12 +1,11 @@
 import React from 'react'
-import Card from './Card'
 
-const Persons = ({persons}) => {
+
+const Persons = ({persons, remove}) => {
     const rows = () => persons.map(note => 
-        <Card
-        key={note.name + 1}
-        card={note}
-        />
+    <p key={note.name}>
+        {note.name} {note.number}<button id={note.id} value={note.name} onClick={event => remove(event.target.value, event.target.id)}>Delete</button>
+    </p>
     )
     return <>{rows()}</>
 }
