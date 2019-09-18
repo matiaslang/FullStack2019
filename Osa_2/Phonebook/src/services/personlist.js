@@ -12,13 +12,13 @@ const create = newObject => {
 }
 
 const deleteUser = (id) => {
-    const row = `${baseUrl}/${id}`
+    const row = `${baseUrl}${id}`
     const request = axios.delete(row)
     return request.then(response => response.data)
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  const request = axios.put(`${baseUrl}${id}`, newObject)
   return request.then(response => response.data)
 }
 
