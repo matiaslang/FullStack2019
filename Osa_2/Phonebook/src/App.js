@@ -91,19 +91,28 @@ const App = () => {
         id: persons.length + 1,
       }
       personService
-      .create(noteObject)
-      .then(returnedPerson => {
-        setErrorNum(0)
-        setErrorMessage(
-          `User ${newName} has now been added`
-        )
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 3000)
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
+        .create(noteObject)
+        .then(returnedPerson => {
+          setErrorNum(0)
+          setErrorMessage(
+            `User ${newName} has now been added`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+        .catch(error => {
+          setErrorNum(1)
+          setErrorMessage(
+            error.response.data.error
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
   }
   doAdd = 0
 }
