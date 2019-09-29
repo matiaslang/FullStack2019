@@ -10,7 +10,8 @@
     "build:ui": "rm -rf build && cd /Users/matiaslang/Desktop/GIT/FullStack2019/Osa_2/Phonebook && npm run build --prod && cp -r build /Users/matiaslang/Desktop/GIT/FullStack2019/Osa_3/Phonebook",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
-    "logs:prod": "heroku logs --tail"
+    "logs:prod": "heroku logs --tail",
+    "lint": "eslint ."
   },
   "author": "Matias Lang",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "morgan": "^1.9.1"
   },
   "devDependencies": {
+    "eslint": "^6.5.0",
     "nodemon": "^1.19.1"
   }
 }
