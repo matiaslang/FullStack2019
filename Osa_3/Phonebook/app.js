@@ -6,6 +6,7 @@ const cors = require('cors')
 const phonebookRouter = require('./controllers/phonebook')
 const middleware = require('./utils/middleware')
 const mongoose = require('mongoose')
+let persons = []
 
 console.log('connecting to', config.MONGODB_URI)
 
