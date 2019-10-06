@@ -1,4 +1,4 @@
-const listHelper = require('../utils/list_helper').default
+const listHelper = require('../utils/list_helper')
 
 const blogWithMostLikes = {
     author: 'Edsger W. Dijkstra',
@@ -74,8 +74,6 @@ const blogs = [
   ]
 
 test('dummy returns one', () => {
-  const blogs = []
-
   const result = listHelper.dummy(blogs)
   expect(result).toBe(1)
 })
@@ -99,10 +97,14 @@ describe('finding the blog with most likes', () => {
         expect(result).toEqual(blogWithMostLikes)
     })
 })
-
+/*
 describe('finding the author with most likes', () => {
   test('finding the author with most likes, and return the name and number of likes', () => {
     const result = listHelper.mostBlogs(blogs)
     expect(result).toEqual(AuthorWithMostLikes)
   })
+
+
 })
+
+*/

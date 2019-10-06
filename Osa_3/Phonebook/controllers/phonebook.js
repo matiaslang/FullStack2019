@@ -26,11 +26,7 @@ let persons = [
 
 
 
-phoneBookRouter.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
-})
-
-phoneBookRouter.get('/api/persons', (request, response) => {
+phoneBookRouter.get('/', async (request, response) => {
   Person
     .find({})
     .then(persons => {
@@ -38,6 +34,13 @@ phoneBookRouter.get('/api/persons', (request, response) => {
     })
 })
 
+
+phoneBookRouter.get('/info', (req,res) => {
+  let num = persons.length
+  let date = new Date()
+  res.send(`<p>Phonebook has info for ${num} people</p>
+    <p>${date}</p>`)
+})
 
 
 phoneBookRouter.get('/:id', (request, response, next) => {
@@ -54,12 +57,6 @@ phoneBookRouter.get('/:id', (request, response, next) => {
 
 
 
-phoneBookRouter.get('/info', (req,res) => {
-  let num = persons.length
-  let date = new Date()
-  res.send(`<p>Phonebook has info for ${num} people</p>
-    <p>${date}</p>`)
-})
 
 const generateId = () => {
   const maxId = persons.length > 0
@@ -98,7 +95,7 @@ phoneBookRouter.post('/', (request, response, next) => {
 
 
 
-phoneBookRouter.put(':id', (request, response, next) => {
+phoneBookRouter.put('/:id', (request, response, next) => {
   const body = request.body
   const person = {
     name: body.name,
@@ -112,7 +109,7 @@ phoneBookRouter.put(':id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-phoneBookRouter.delete(':id', (request, response, next) => {
+phoneBookRouter.delete('/:id', (request, response, next) => {
   console.log(request.params.id)
   Person.findByIdAndRemove(request.params.id)
     .then(result => {
