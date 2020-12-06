@@ -8,9 +8,6 @@ server.listen(config.PORT, () => {
   console.log(`Server running on port ${config.PORT}`)
 })
 
-
-
-
 /*
 require('dotenv').config()
 const http = require('http')
@@ -23,18 +20,10 @@ const mongoose = require('mongoose')
 let PORT = process.env.PORT
 let MONGODB_URI = process.env.MONGODB_URI
 
-
-
-
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true , useUnifiedTopology: true})
-
-
-
-
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
-
 
 */
